@@ -15,9 +15,7 @@ let inputs = document.querySelectorAll('input');
 
 armazenarValor(inputs);
 
-let resultado = media(ValorInput).toFixed(2);
-
-el.innerHTML = resultado;
+vereficarEAddResultado (ValorInput,el)
 
 resetarArray(ValorInput);
 
@@ -26,18 +24,26 @@ resetarArray(ValorInput);
 function armazenarValor(input) {
     for (i = 0; i < input.length; i++) {
 
-    var inputValue = input[i].value;
-    
-    var value = inputValue === "" ? 0 : parseFloat(inputValue);
+    let inputValue = input[i].value;
 
-    var final = parseFloat(value.toFixed(2))
-    
-    ValorInput.push(final);
+    let replaceValue = inputValue.replace(',','.');
 
+    let value;
+    
+    if (isNumber(replaceValue) === true || replaceValue === '') {
+        var final = inputValue === "" ? 0 : parseFloat(replaceValue);
+        
+        value = final;
+    }else{
+        value = 'ERROR'
+    }
+    ValorInput.push(value);
     }
 } 
-
-function media (array){
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+function calcularMedia (array){
     var soma = 0;
     var a = 0;
     for (let index = 0; index < array.length; index++) {
@@ -45,6 +51,14 @@ function media (array){
         a = soma / array.length;
     }
     return a;
+}
+function vereficarEAddResultado (array,el) {
+    let resultado = calcularMedia(array).toFixed(2);
+    console.log(resultado);
+    if (resultado === 'NaN'){
+    resultado = `ERRO DE DIGITAÇÃO`
+    }
+    return el.innerHTML = resultado;
 }
 function resetarArray(array){
     array.length = 0;
